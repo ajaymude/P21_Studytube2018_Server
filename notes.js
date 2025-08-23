@@ -71,6 +71,12 @@
 // use the logger for logging
 // winston for logging
 
+
+// write the cron job 
+
+
+// use the color package for colored logs
+
 /////////////////////////////////////////////////////////////////////////
 
 // config env setup
