@@ -7,13 +7,29 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 // import createHttpError from "http-errors";
-import errorHandler, {
-  notFound,
-  asyncHandler,
-} from "./middlewares/errorHandler.js";
+import errorHandler, { notFound } from "./middlewares/errorHandler.js";
 import router from "./routes/mainRoute.js";
 
-asyncHandler;
+const allowed = ["http://localhost:5173", "http://127.0.0.1:5173"];
+
+const corsOptions = {
+  origin: (origin, cb) => {
+    // allow non-browser tools (no origin) and our dev hosts
+    if (!origin || allowed.includes(origin)) return cb(null, true);
+    return cb(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+  ],
+  maxAge: 86400, // cache preflight
+  optionsSuccessStatus: 204,
+};
 
 //create express app
 const app = express();
@@ -42,11 +58,11 @@ app.use(cookieParser());
 app.use(compression());
 
 //cors
-app.use(cors());
+// BEFORE your routes
+app.use(cors(corsOptions));
 
 //api v1 routes
 app.use("/api/v1", router);
-
 
 // 404
 app.use(notFound);

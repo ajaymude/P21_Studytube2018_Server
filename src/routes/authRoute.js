@@ -10,11 +10,11 @@ import {
 
 const authRoute = Router();
 
-authRoute.route("/sing-up").get(signUp);
+authRoute.route("/sign-up").post(signUp);
 
-authRoute.route("/sing-in").get(signIn);
+authRoute.route("/sign-in").post(signIn);
 
-authRoute.route("/sing-out").get(signOut);
+authRoute.route("/sign-out").get(signOut);
 
 authRoute.route("/me").get(getUser);
 
